@@ -1,0 +1,183 @@
+@import "../../../../../../theming/theme.scss";
+
+
+.sk-layout{
+  background: #fff;
+
+  &__top-bar{
+    background: #fff;
+    // box-shadow: none;
+    // position: relative;
+
+    .my-logo {
+      color:white;
+      height: 85px;
+      flex:0 0 250px;
+      padding:13px 20px;
+      margin-right:15px;
+      line-height: 16px;
+      background: url(./../images/conyers-logo.png);
+      background-repeat: no-repeat;
+      // display: none;
+    }
+
+    input.sk-search-box__text {
+      color:#444;
+      outline: 0; 
+
+      &::-webkit-input-placeholder  {
+        color:#ccc !important;
+        font-weight:100;
+      }
+    }
+
+    .sk-search-box{
+      -webkit-border-radius: 5px;
+      border-radius: 5px;
+      height: 42px;
+      margin-top: 20px;
+      border: 1px solid #9a9a9a;
+
+      &__action {
+        padding: 5px 20px;
+        background: #0282b0;
+        color:#fff;
+        border: 0 none;
+        cursor: pointer;
+        font-size: 16px;
+        -webkit-border-radius: 0 5px 5px 0;
+        border-radius: 0 5px 5px 0;
+        display: inline-block;
+        visibility: visible;
+      }
+
+      &__action:hover{
+        color:#fff;
+        background: #4cbad3;
+      }
+
+      &__loader {
+        display: none;
+      }
+    }
+  }
+  // fixed max-with search box
+  .sk-top-bar__content{
+    max-width: 1024px;
+  }
+
+  // tabs for menu
+  .my-tabs{
+    background: #828487;
+    height: 50px;
+    margin-top: 110px;
+    // display: none;
+
+  }
+  &__body{
+    max-width: 1024px;
+  }
+
+  &__filters{
+    margin: 0px;
+    box-shadow: none;
+  }
+
+  &__results{
+    margin: 0;
+    box-shadow: none;
+
+    .sk-hits-list{
+      a {
+        color: #0282b0;
+      }
+
+    } 
+    .sk-hits-list-hit{
+      border-bottom: 1px solid #c3c3c3;
+      width: 100%;
+
+      &__title{
+        margin: 0;
+        color: #0282b0;
+      }
+      &__details{
+        word-break: break-all;
+      }
+      &__text  {
+        font-size: 14px;
+        text-align: justify;
+        text-justify: inter-word;
+        line-height: 20px;
+        margin-top: 5px;
+      }
+      &__link {
+          font-size: 12px;
+      }
+    }
+
+    .search_term{
+      padding-left: 15px;
+      margin: 0 15px 20px;
+      border-bottom: 1px solid #c3c3c3;
+
+      h2{
+        font-weight: normal;
+      }
+    }
+
+    .sk-toggle-option.is-active {
+      background-color: #0282b0;
+      color: white;
+      border-color: #0282b0;
+    }
+
+    .sk-no-hits__info{
+      font-size: 20px;
+    }
+  }
+}
+
+.view-src-link {
+  position:fixed;
+  line-height:40px;
+  background:#eee;
+  right:10px;
+  bottom:10px;
+  text-decoration: none;
+  padding:0 20px;
+  border-radius: 3px;
+  color:#08c;
+  display:none;
+}
+
+.footer{
+  // height: 50px;
+  background: #828487;
+  color:#fff;
+  text-align: center;
+  padding: 1px;
+  // display: none;
+
+  h5{
+    margin: 10px;
+    a {
+      color: #fff;
+      text-decoration: none;
+    }
+    a:hover{
+      // color:#0090ba;
+      text-decoration: underline;
+    }
+  }
+}
+
+// results page
+.container_flex {
+  display: flex;
+}
+.Grid-cell {
+  flex-direction:row;
+  padding-right: 10px;
+  font-size: 14px;
+}
