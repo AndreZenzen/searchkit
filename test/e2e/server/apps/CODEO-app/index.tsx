@@ -25,12 +25,12 @@ import {
   ViewSwitcherHits,
   Layout, LayoutBody, LayoutResults,
   SideBar, TopBar,
-  ActionBar, ActionBarRow
+  ActionBar, ActionBarRow,
+  DynamicRangeFilter, InputFilter
 } from "../../../../../src"
 
 import {MovieHitsListItem, SearchTerm} from "./components";
 
-//import "./../searchkit/theming/theme.scss";
 import "./style/main.scss";
 import "./style/midea_queries.scss";
 
@@ -41,40 +41,15 @@ class App extends React.Component<any, any> {
   constructor(props) {
     super(props)
     // host
-    const host = "http://localhost:9250";
+    const host = "http://demo.searchkit.co/api"
 
     // indexes
-    const indexes = ["jurisprudencia_acordao-*", "jurisprudencia_decmono-*"];
+    const indexes = ["movies"];
 
     // Manager
     this.searchkit = new SearchkitManager(host+"/"+indexes.join(","),{
       searchOnLoad:false
     });
-
-    // Add queries in post for snippet and highlight
-    this.searchkit.setQueryProcessor((plainQueryObject)=>{
-      // script for return snippet of field
-      // plainQueryObject.script_fields = {
-      //   "content": {
-      //     "script": "_fields['content'].value.replaceAll(/\n|\t/,'').substring(0,300)"
-      //   }
-      // };
-
-      // highlight with snippet size
-      plainQueryObject.highlight = {
-        "number_of_fragments" : 1,
-        "fragment_size" : 300,
-        "fields": {
-          "txtementa": {},
-          "txtacordao": {},
-          "txtrelatorio": {},
-          "competencia": {},
-          "textoconclusao":{}
-        }
-      };
-      
-      return plainQueryObject
-    })
   }
 
   render(){
@@ -87,7 +62,7 @@ class App extends React.Component<any, any> {
 	            translations={{"searchbox.placeholder":"search"}}
 	            autofocus={true}
 	            searchOnChange={false}
-	            queryFields={["_all","txtementa","txtrelatorio","txtacordao","competencia","textoconclusao"]}
+	            queryFields={["_all"]}
               blurAction="none"
               queryOptions={{default_operator:"and"}}
 	          />
@@ -96,7 +71,19 @@ class App extends React.Component<any, any> {
           <LayoutBody>
             <SideBar>
               <h3>Filter Results</h3>
-               <RefinementListFilter title="Repository" id="type" field="_type" size={10} operator="OR" />
+              <HierarchicalMenuFilter fields={["type.raw", "genres.raw"]} title="Categories" id="categories"/>
+              <DynamicRangeFilter field="metaScore" id="metascore" title="Metascore" rangeFormatter={(count)=> count + "*"}/>
+              <RangeFilter min={0} max={10} field="imdbRating" id="imdbRating" title="IMDB Rating" showHistogram={true}/>
+              <InputFilter id="writers" searchThrottleTime={500} title="Writers" placeholder="Search writers" searchOnChange={true} queryFields={["writers"]} />
+              <RefinementListFilter id="actors" title="Actors" field="actors.raw" size={10}/>
+              <RefinementListFilter translations={{"facets.view_more":"View more writers"}} id="writers" title="Writers" field="writers.raw" operator="OR" size={10}/>
+              <RefinementListFilter id="countries" title="Countries" field="countries.raw" operator="OR" size={10}/>
+              <NumericRefinementListFilter id="runtimeMinutes" title="Length" field="runtimeMinutes" options={[
+                {title:"All"},
+                {title:"up to 20", from:0, to:20},
+                {title:"21 to 60", from:21, to:60},
+                {title:"60 or more", from:61, to:1000}
+              ]}/>
             </SideBar>
   	      	<LayoutResults>
   	          <ActionBar>
@@ -108,7 +95,8 @@ class App extends React.Component<any, any> {
   	          <Hits 
                 hitsPerPage={10}
                 mod="sk-hits-list"
-                sourceFilter={['*']} 
+                sourceFilter={['*']}
+                highlightFields={["title","plot"]} 
                 itemComponent={MovieHitsListItem}
               />  
   	          <NoHits />
@@ -117,7 +105,7 @@ class App extends React.Component<any, any> {
   	      	</LayoutResults>
         	</LayoutBody>
           <div className="footer">
-            <h5>Developed by <a href="http://www.e-storageonline.com.br" target="_blank">E-STORAGE</a></h5>
+            <h5>Developed by <a href="http://www.searchkit.co" target="_blank">DEVELOP</a></h5>
           </div>
     	</Layout>
 		</SearchkitProvider>
